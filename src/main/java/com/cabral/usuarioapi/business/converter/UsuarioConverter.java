@@ -17,20 +17,20 @@ public class UsuarioConverter {
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setEnderecos(paraListaEndereco(usuarioDTO.getEnderecos()));
+        usuario.setEnderecos(paraListaEnderecoEntity(usuarioDTO.getEnderecos()));
         usuario.setTelefones(paraListaTelefones(usuarioDTO.getTelefones()));
         return usuario;
     }
 
 
-    public List<Endereco> paraListaEndereco(List<EnderecoDTO> enderecoDTOS){
+    public List<Endereco> paraListaEnderecoEntity(List<EnderecoDTO> enderecoDTOS){
         return enderecoDTOS.stream().map(this::paraEnderecoEntity).toList();
     }
 
     public Endereco paraEnderecoEntity(EnderecoDTO enderecoDTO){
         Endereco endereco = new Endereco();
         endereco.setRua(enderecoDTO.getRua());
-        endereco.setNumero(Long.valueOf(enderecoDTO.getNumero())); // converte de String para Long
+        endereco.setNumero(Long.valueOf(enderecoDTO.getNumero()));
         endereco.setComplemento(enderecoDTO.getComplemento());
         endereco.setCidade(enderecoDTO.getCidade());
         endereco.setEstado(enderecoDTO.getEstado());
@@ -55,19 +55,19 @@ public class UsuarioConverter {
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
         dto.setSenha(usuario.getSenha());
+        dto.setEnderecos(paraListaEnderecoDTO(usuario.getEnderecos()));
+        dto.setTelefones(paraListaTelefoneDTO(usuario.getTelefones()));
         return dto;
     }
 
     public List<EnderecoDTO> paraListaEnderecoDTO(List<Endereco> enderecos) {
-        return enderecos.stream()
-                .map(this::paraEnderecoDTO)
-                .toList();
+        return enderecos.stream().map(this::paraEnderecoDTO).toList();
     }
 
     public EnderecoDTO paraEnderecoDTO(Endereco endereco) {
         EnderecoDTO dto = new EnderecoDTO();
         dto.setRua(endereco.getRua());
-        dto.setNumero(String.valueOf(endereco.getNumero()));
+        dto.setNumero(String.valueOf(endereco.getNumero())); // aqui é Long → String
         dto.setComplemento(endereco.getComplemento());
         dto.setCidade(endereco.getCidade());
         dto.setEstado(endereco.getEstado());
@@ -76,9 +76,7 @@ public class UsuarioConverter {
     }
 
     public List<TelefoneDTO> paraListaTelefoneDTO(List<Telefone> telefones) {
-        return telefones.stream()
-                .map(this::paraTelefoneDTO)
-                .toList();
+        return telefones.stream().map(this::paraTelefoneDTO).toList();
     }
 
     public TelefoneDTO paraTelefoneDTO(Telefone telefone) {
