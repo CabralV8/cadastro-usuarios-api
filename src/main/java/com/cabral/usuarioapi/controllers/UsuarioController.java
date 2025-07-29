@@ -1,8 +1,9 @@
 package com.cabral.usuarioapi.controllers;
 
 import com.cabral.usuarioapi.business.UsuarioService;
+import com.cabral.usuarioapi.business.dto.EnderecoDTO;
+import com.cabral.usuarioapi.business.dto.TelefoneDTO;
 import com.cabral.usuarioapi.business.dto.UsuarioDTO;
-import com.cabral.usuarioapi.insfrastructure.entity.Usuario;
 import com.cabral.usuarioapi.insfrastructure.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +40,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Usuario> buscarUsuarioPorEmail(@RequestParam("email") String email){
+    public ResponseEntity<UsuarioDTO> buscarUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
     }
 
@@ -47,5 +48,23 @@ public class UsuarioController {
     public ResponseEntity<Void> deletarUsuarioPorEmail(@PathVariable String email){
         usuarioService.deletarUsuarioPorEmail(email);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> atualizaDadoUsuario(@RequestBody UsuarioDTO dto,
+                                                      @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(usuarioService.atualizarDadosUsuario(token, dto));
+    }
+
+    @PutMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> atualizaEndereco(@RequestBody EnderecoDTO dto,
+                                                        @RequestParam("id") Long id){
+        return ResponseEntity.ok(usuarioService.atualizaEndereco(String.valueOf(id), dto));
+    }
+
+    @PutMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> atualizaTelefone(@RequestBody TelefoneDTO dto,
+                                                        @RequestParam("id") Long id){
+        return ResponseEntity.ok(usuarioService.atualizaTelefone(id, dto));
     }
 }

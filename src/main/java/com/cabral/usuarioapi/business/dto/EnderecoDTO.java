@@ -2,11 +2,22 @@ package com.cabral.usuarioapi.business.dto;
 
 public class EnderecoDTO {
 
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
     private String rua;
-    public String numero;
-    public String complemento;
-    public String cidade;
-    public String estado;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private String numero;
+    private String complemento;
+    private String cidade;
+    private String estado;
     private String cep;
 
     public EnderecoDTO(){
