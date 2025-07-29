@@ -6,6 +6,7 @@ import com.cabral.usuarioapi.insfrastructure.entity.Usuario;
 import com.cabral.usuarioapi.insfrastructure.exceptions.ConflictException;
 import com.cabral.usuarioapi.insfrastructure.exceptions.ResourceNotFoundException;
 import com.cabral.usuarioapi.insfrastructure.repository.UsuarioRepository;
+import com.cabral.usuarioapi.insfrastructure.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,17 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioConverter usuarioConverter;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public UsuarioService(
             UsuarioRepository usuarioRepository,
             UsuarioConverter usuarioConverter,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder, JwtUtil jwtUtil
     ) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioConverter = usuarioConverter;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO){
@@ -59,5 +62,19 @@ public class UsuarioService {
         usuarioRepository.deleteByEmail(email);
     }
 
+    public UsuarioDTO atualizarDadosUsuario(String token, UsuarioDTO usuarioDTO){
+        // Aqui é realizada a busca do usuário através do token
+        String email = jwtUtil.extractEmailToken(token.substring(7));
 
+        // Crptografia de senha.
+        usuarioDTO.setSenha(usuarioDTO.getSenha() != null ? passwordEncoder.encode(usuarioDTO.getSenha()) : null );
+
+        Usuario usuarioEntity = usuarioRepository.findByEmail(email).orElseThrow(()->
+                new ResourceNotFoundException("Email não localizado."));
+
+        Usuario usuario = usuarioConverter.updateUsuario(usuarioDTO, usuarioEntity);
+
+
+        return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
+    }
 }

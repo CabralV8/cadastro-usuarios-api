@@ -9,10 +9,11 @@ import com.cabral.usuarioapi.insfrastructure.entity.Usuario;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 public class UsuarioConverter {
 
-    public Usuario paraUsuarioEntity(UsuarioDTO usuarioDTO){
+    public Usuario paraUsuarioEntity(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
@@ -23,11 +24,11 @@ public class UsuarioConverter {
     }
 
 
-    public List<Endereco> paraListaEnderecoEntity(List<EnderecoDTO> enderecoDTOS){
+    public List<Endereco> paraListaEnderecoEntity(List<EnderecoDTO> enderecoDTOS) {
         return enderecoDTOS.stream().map(this::paraEnderecoEntity).toList();
     }
 
-    public Endereco paraEnderecoEntity(EnderecoDTO enderecoDTO){
+    public Endereco paraEnderecoEntity(EnderecoDTO enderecoDTO) {
         Endereco endereco = new Endereco();
         endereco.setRua(enderecoDTO.getRua());
         endereco.setNumero(Long.valueOf(enderecoDTO.getNumero()));
@@ -38,11 +39,11 @@ public class UsuarioConverter {
         return endereco;
     }
 
-    public List<Telefone> paraListaTelefones(List<TelefoneDTO> telefoneDTOS){
+    public List<Telefone> paraListaTelefones(List<TelefoneDTO> telefoneDTOS) {
         return telefoneDTOS.stream().map(this::paraTelefoneEntity).toList();
     }
 
-    public Telefone paraTelefoneEntity(TelefoneDTO telefoneDTO){
+    public Telefone paraTelefoneEntity(TelefoneDTO telefoneDTO) {
         Telefone telefone = new Telefone();
         telefone.setNumero(telefoneDTO.getNumero());
         telefone.setDdd(telefoneDTO.getDdd());
@@ -84,5 +85,16 @@ public class UsuarioConverter {
         dto.setNumero(telefone.getNumero());
         dto.setDdd(telefone.getDdd());
         return dto;
+    }
+
+    public Usuario updateUsuario(UsuarioDTO usuarioDTO, Usuario entity) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(usuarioDTO.getNome() != null ? usuarioDTO.getNome() : entity.getNome());
+        usuario.setId(usuario.getId() != null ? usuario.getId() : entity.getId());
+        usuario.setSenha(usuarioDTO.getSenha() != null ? usuarioDTO.getSenha() : entity.getSenha());
+        usuario.setEmail(usuarioDTO.getEmail() != null ? usuarioDTO.getEmail() : entity.getEmail());
+        usuario.setEnderecos(entity.getEnderecos());
+        usuario.setTelefones(entity.getTelefones());
+        return usuario;
     }
 }
