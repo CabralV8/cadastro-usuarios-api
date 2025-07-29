@@ -12,13 +12,19 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final UsuarioConverter usuarioConverter;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioConverter usuarioConverter) {
+    public UsuarioService(
+            UsuarioRepository usuarioRepository,
+            UsuarioConverter usuarioConverter,
+            PasswordEncoder passwordEncoder
+    ) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioConverter = usuarioConverter;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO){
+    public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioConverter.paraUsuarioEntity(usuarioDTO);
         return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
     }
