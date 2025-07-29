@@ -6,9 +6,10 @@ import com.cabral.usuarioapi.business.dto.UsuarioDTO;
 import com.cabral.usuarioapi.insfrastructure.entity.Endereco;
 import com.cabral.usuarioapi.insfrastructure.entity.Telefone;
 import com.cabral.usuarioapi.insfrastructure.entity.Usuario;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class UsuarioConverter {
 
     public Usuario paraUsuarioEntity(UsuarioDTO usuarioDTO){
@@ -23,17 +24,17 @@ public class UsuarioConverter {
 
 
     public List<Endereco> paraListaEndereco(List<EnderecoDTO> enderecoDTOS){
-        return enderecoDTOS.stream().map(this::paraEndereco).toList();
+        return enderecoDTOS.stream().map(this::paraEnderecoEntity).toList();
     }
 
-    public Endereco paraEndereco(EnderecoDTO enderecoDTO){
+    public Endereco paraEnderecoEntity(EnderecoDTO enderecoDTO){
         Endereco endereco = new Endereco();
-        endereco.getRua();
-        endereco.getNumero();
-        endereco.getComplemento();
-        endereco.getCidade();
-        endereco.getEstado();
-        endereco.getCep();
+        endereco.setRua(enderecoDTO.getRua());
+        endereco.setNumero(Long.valueOf(enderecoDTO.getNumero())); // converte de String para Long
+        endereco.setComplemento(enderecoDTO.getComplemento());
+        endereco.setCidade(enderecoDTO.getCidade());
+        endereco.setEstado(enderecoDTO.getEstado());
+        endereco.setCep(enderecoDTO.getCep());
         return endereco;
     }
 
@@ -43,8 +44,8 @@ public class UsuarioConverter {
 
     public Telefone paraTelefoneEntity(TelefoneDTO telefoneDTO){
         Telefone telefone = new Telefone();
-        telefone.getNumero();
-        telefone.getDdd();
+        telefone.setNumero(telefoneDTO.getNumero());
+        telefone.setDdd(telefoneDTO.getDdd());
         return telefone;
     }
 
@@ -86,7 +87,4 @@ public class UsuarioConverter {
         dto.setDdd(telefone.getDdd());
         return dto;
     }
-
-
-
 }
