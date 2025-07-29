@@ -1,10 +1,16 @@
 package com.cabral.usuarioapi.business;
 
 import com.cabral.usuarioapi.business.converter.UsuarioConverter;
+import com.cabral.usuarioapi.business.dto.EnderecoDTO;
+import com.cabral.usuarioapi.business.dto.TelefoneDTO;
 import com.cabral.usuarioapi.business.dto.UsuarioDTO;
+import com.cabral.usuarioapi.insfrastructure.entity.Endereco;
+import com.cabral.usuarioapi.insfrastructure.entity.Telefone;
 import com.cabral.usuarioapi.insfrastructure.entity.Usuario;
 import com.cabral.usuarioapi.insfrastructure.exceptions.ConflictException;
 import com.cabral.usuarioapi.insfrastructure.exceptions.ResourceNotFoundException;
+import com.cabral.usuarioapi.insfrastructure.repository.EnderecoRepository;
+import com.cabral.usuarioapi.insfrastructure.repository.TelefoneRepository;
 import com.cabral.usuarioapi.insfrastructure.repository.UsuarioRepository;
 import com.cabral.usuarioapi.insfrastructure.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,16 +23,20 @@ public class UsuarioService {
     private final UsuarioConverter usuarioConverter;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final EnderecoRepository enderecoRepository;
+    private final TelefoneRepository telefoneRepository;
 
     public UsuarioService(
             UsuarioRepository usuarioRepository,
             UsuarioConverter usuarioConverter,
-            PasswordEncoder passwordEncoder, JwtUtil jwtUtil
+            PasswordEncoder passwordEncoder, JwtUtil jwtUtil, EnderecoRepository enderecoRepository, TelefoneRepository telefoneRepository
     ) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioConverter = usuarioConverter;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.enderecoRepository = enderecoRepository;
+        this.telefoneRepository = telefoneRepository;
     }
 
     public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO){
@@ -53,11 +63,14 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
-    public Usuario buscarUsuarioPorEmail(String email){
-        return usuarioRepository.findByEmail(email).orElseThrow(
-                ()-> new ResourceNotFoundException("Email não encontrado" + email));
+    public UsuarioDTO buscarUsuarioPorEmail(String email) {
+        try {
+            return usuarioConverter.paraUsuarioDTO(usuarioRepository.findByEmail(email).orElseThrow(
+                    () -> new ResourceNotFoundException("Email não encontrado" + email)));
+        }catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException("Email não encontrado" + email);
+        }
     }
-
     public void deletarUsuarioPorEmail(String email){
         usuarioRepository.deleteByEmail(email);
     }
@@ -76,5 +89,25 @@ public class UsuarioService {
 
 
         return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
+    }
+
+    public EnderecoDTO atualizaEndereco(String idEndereco, EnderecoDTO enderecoDTO){
+
+        Endereco entity = enderecoRepository.findById(Long.valueOf(idEndereco)).orElseThrow(
+                ()-> new ResourceNotFoundException("Id não encontrado" + idEndereco));
+
+        Endereco endereco = usuarioConverter.updateEndereco(enderecoDTO, entity);
+
+        return usuarioConverter.paraEnderecoDTO(enderecoRepository.save(endereco));
+    }
+
+    public TelefoneDTO atualizaTelefone(Long idTelefone, TelefoneDTO dto){
+
+        Telefone entity = telefoneRepository.findById(idTelefone).orElseThrow(
+                ()-> new ResourceNotFoundException("Id não encontrado" + idTelefone));
+
+        Telefone telefone = usuarioConverter.updateTelefone(dto, entity);
+
+        return usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
     }
 }

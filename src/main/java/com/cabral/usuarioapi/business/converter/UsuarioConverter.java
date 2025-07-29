@@ -67,6 +67,7 @@ public class UsuarioConverter {
 
     public EnderecoDTO paraEnderecoDTO(Endereco endereco) {
         EnderecoDTO dto = new EnderecoDTO();
+        dto.setId(endereco.getId());
         dto.setRua(endereco.getRua());
         dto.setNumero(String.valueOf(endereco.getNumero())); // aqui é Long → String
         dto.setComplemento(endereco.getComplemento());
@@ -82,6 +83,7 @@ public class UsuarioConverter {
 
     public TelefoneDTO paraTelefoneDTO(Telefone telefone) {
         TelefoneDTO dto = new TelefoneDTO();
+        dto.setId(telefone.getId());
         dto.setNumero(telefone.getNumero());
         dto.setDdd(telefone.getDdd());
         return dto;
@@ -96,5 +98,26 @@ public class UsuarioConverter {
         usuario.setEnderecos(entity.getEnderecos());
         usuario.setTelefones(entity.getTelefones());
         return usuario;
+    }
+
+    public Endereco updateEndereco(EnderecoDTO enderecoDTO, Endereco entity) {
+        Endereco endereco = new Endereco();
+        endereco.setId(enderecoDTO.getId() != null ? enderecoDTO.getId() : entity.getId());
+        endereco.setRua(enderecoDTO.getRua() != null ? enderecoDTO.getRua() : entity.getRua());
+        endereco.setNumero(enderecoDTO.getNumero() != null ? Long.valueOf(enderecoDTO.getNumero()) : entity.getNumero());
+        endereco.setComplemento(enderecoDTO.getComplemento() != null ? enderecoDTO.getComplemento() : entity.getComplemento());
+        endereco.setCidade(enderecoDTO.getCidade() != null ? enderecoDTO.getCidade() : entity.getCidade());
+        endereco.setEstado(enderecoDTO.getEstado() != null ? enderecoDTO.getEstado() : entity.getEstado());
+        endereco.setCep(enderecoDTO.getCep() != null ? enderecoDTO.getCep() : entity.getCep());
+        return endereco;
+
+    }
+
+    public Telefone updateTelefone(TelefoneDTO telefoneDTO, Telefone entity){
+        Telefone telefone =  new Telefone();
+        telefone.setId(entity.getId());
+        telefone.setDdd(telefoneDTO.getDdd() != null ? telefoneDTO.getDdd() : entity.getDdd());
+        telefone.setNumero(telefoneDTO.getNumero() != null ? telefoneDTO.getNumero() : entity.getNumero());
+        return telefone;
     }
 }
