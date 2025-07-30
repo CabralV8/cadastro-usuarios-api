@@ -22,6 +22,9 @@ public class Endereco {
     private String estado;
     @Column(name = "cep", length = 9)
     private String cep;
+    @Column(name = "usuario_id")
+    private Long usuario_id;
+
 
     public Endereco() {
     }
@@ -90,5 +93,13 @@ public class Endereco {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public Long getUsuario_id() {
+        return usuario_id;
+    }
+
+    public void setUsuario_id(Long usuario_id) {
+        this.usuario_id = usuario_id;
     }
 }
