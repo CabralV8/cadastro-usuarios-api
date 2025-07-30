@@ -25,10 +25,10 @@ public class UsuarioConverter {
 
 
     public List<Endereco> paraListaEnderecoEntity(List<EnderecoDTO> enderecoDTOS) {
-        return enderecoDTOS.stream().map(this::paraEnderecoEntity).toList();
+        return enderecoDTOS.stream().map(this::paraEndereco).toList();
     }
 
-    public Endereco paraEnderecoEntity(EnderecoDTO enderecoDTO) {
+    public Endereco paraEndereco(EnderecoDTO enderecoDTO) {
         Endereco endereco = new Endereco();
         endereco.setRua(enderecoDTO.getRua());
         endereco.setNumero(Long.valueOf(enderecoDTO.getNumero()));
@@ -120,4 +120,25 @@ public class UsuarioConverter {
         telefone.setNumero(telefoneDTO.getNumero() != null ? telefoneDTO.getNumero() : entity.getNumero());
         return telefone;
     }
+
+    public Endereco paraEnderecoEntity(EnderecoDTO dto, Long idUsuario){
+        Endereco endereco = new Endereco();
+        endereco.setRua(dto.getRua());
+        endereco.setCidade(dto.getCidade());
+        endereco.setCep(dto.getCep());
+        endereco.setComplemento(dto.getComplemento());
+        endereco.setEstado(dto.getEstado());
+        endereco.setNumero(Long.valueOf(dto.getNumero()));
+        endereco.setUsuario_id(idUsuario);
+        return endereco;
+    }
+
+    public Telefone paraTelefoneEntity(TelefoneDTO dto, Long idUsuario){
+        Telefone telefone = new Telefone();
+        telefone.setNumero(dto.getNumero());
+        telefone.setDdd(dto.getDdd());
+        telefone.setUsuario_id(idUsuario);
+        return telefone;
+    }
+
 }

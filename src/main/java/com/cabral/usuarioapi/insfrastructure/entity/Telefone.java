@@ -16,6 +16,9 @@ public class Telefone {
     @Column(name = "ddd", length = 3)
     private String ddd;
 
+    @Column(name = "usuario_id")
+    private Long usuario_id;
+
     // Construtor vazio (necessário para JPA)
     public Telefone() {
     }
@@ -50,5 +53,13 @@ public class Telefone {
 
     public void setDdd(String ddd) {
         this.ddd = ddd;
+    }
+
+    public Long getUsuario_id() {
+        return usuario_id;
+    }
+
+    public void setUsuario_id(Long usuario_id) {
+        this.usuario_id = usuario_id;
     }
 }
