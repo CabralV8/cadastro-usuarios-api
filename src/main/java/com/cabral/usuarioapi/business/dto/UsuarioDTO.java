@@ -11,7 +11,16 @@ public class UsuarioDTO {
     private List<EnderecoDTO> enderecos;
     private List<TelefoneDTO> telefones;
 
+    public UsuarioDTO() {
+    }
 
+    public UsuarioDTO(String nome, String email, String senha, List<EnderecoDTO> enderecos, List<TelefoneDTO> telefones) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.enderecos = enderecos;
+        this.telefones = telefones;
+    }
 
     public String getNome() {
         return nome;

@@ -18,8 +18,17 @@ public class UsuarioConverter {
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setEnderecos(paraListaEnderecoEntity(usuarioDTO.getEnderecos()));
-        usuario.setTelefones(paraListaTelefones(usuarioDTO.getTelefones()));
+        usuario.setEnderecos(
+                usuario.getEnderecos() != null
+                        ? paraListaEnderecoEntity(usuarioDTO.getEnderecos())
+                        : null
+        );
+
+        usuario.setTelefones(
+                usuario.getTelefones() != null
+                        ? paraListaTelefones(usuarioDTO.getTelefones())
+                        : null
+        );
         return usuario;
     }
 
@@ -56,8 +65,19 @@ public class UsuarioConverter {
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
         dto.setSenha(usuario.getSenha());
-        dto.setEnderecos(paraListaEnderecoDTO(usuario.getEnderecos()));
-        dto.setTelefones(paraListaTelefoneDTO(usuario.getTelefones()));
+
+        dto.setEnderecos(
+                usuario.getEnderecos() != null
+                        ? paraListaEnderecoDTO(usuario.getEnderecos())
+                        : null
+        );
+
+        dto.setTelefones(
+                usuario.getTelefones() != null
+                        ? paraListaTelefoneDTO(usuario.getTelefones())
+                        : null
+        );
+
         return dto;
     }
 
