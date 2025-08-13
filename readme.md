@@ -4,7 +4,24 @@
 Esta aplicação é um microsserviço para gerenciamento de usuários, endereços e telefones, desenvolvido em Java com Spring Boot. Possui autenticação via JWT, integração com API ViaCep para consulta de endereços pelo CEP, e endpoints REST para CRUD de usuários.
 
 
+## Variáveis de Ambiente
+
+Para rodar este projeto, você precisará adicionar as seguintes variáveis de ambiente no seu application properties:
+
+| Variável                      | Descrição                                | Valor Padrão                           |
+|:------------------------------|:-----------------------------------------|:---------------------------------------|
+| `spring.datasource.url=`      | URL do banco de dados MySQL              | jdbc:mysql://localhost:3306/db_usuario |
+| `spring.datasource.username=` | Usuário do banco de dados                | root                                   |
+| `spring.datasource.password=` | Senha do banco de dados                  | **Obrigatório**                        |
+| `viacep.url=`                 | URL base para consulta de CEP via ViaCEP | https://viacep.com.br                  |
+
+
+
 ## Documentação da API
+
+A documentação da API se encontra disponível no Swagger, uma ferramenta que permite visualizar e interagir com os endpoints da API de forma fácil e intuitiva. Você pode acessar a documentação da API através do seguinte URL:
+
+http://localhost:8080/swagger-ui.html
 
 #### Retorna o usuário cadastrado
 
@@ -111,22 +128,9 @@ Esta aplicação é um microsserviço para gerenciamento de usuários, endereço
 |:----------|:---------|:---------------------------------------|
 | `cep`     | `string` | **Obrigatório**:  CEP a ser consultado |
 
-## Variáveis de Ambiente
-
-Para rodar este projeto, você precisará adicionar as seguintes variáveis de ambiente no seu application properties:
-
-| Variável     | Descrição                                | Valor Padrão                           |
-|:-------------|:-----------------------------------------|:---------------------------------------|
-| `DB_URL`     | URL do banco de dados MySQL              | jdbc:mysql://localhost:3306/db_usuario |
-| `DB_USER`    | Usuário do banco de dados                | root                                   |
-| `DB_PASS`    | Senha do banco de dados                  | **Obrigatório**                        |
-| `VIACEP_URL` | URL base para consulta de CEP via ViaCEP | https://viacep.com.br                  |
-
-
-
 ## Feedback
 
-Se você tiver algum feedback, por favor deixe por meio de
+Se você tiver algum feedback ou dúvida, por favor deixe por meio de:
 
 **Email**: valberton77@gmail.com
 
